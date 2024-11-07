@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.loans.name }}
+spec:
+  replicas: {{ .Values.loans.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.loans.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.loans.name }}
+    spec:
+      containers:
+      - name: {{ .Values.loans.name }}
+        image: "{{ .Values.loans.image.repository }}:{{ .Values.loans.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.loans.service.port }}
+        envForm:
+        - configMapRef:
+            name: bank-config
+        - secretRef:
+            name: bank-secrets

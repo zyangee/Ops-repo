@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-config
+data:
+  DATABASE_URL: {{ .Values.common.configMap.DATABASE_URL }}
+  REDIS_HOST: {{ .Values.common.configMap.REDIS_HOST }}

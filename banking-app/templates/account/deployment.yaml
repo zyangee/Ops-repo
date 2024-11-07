@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.account.name }}
+spec:
+  replicas: {{ .Values.account.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.account.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.account.name }}
+    spec: 
+      containers:
+      - name: {{ .Values.account.name }}
+        image: "{{ .Values.account.image.repository }}:{{ .Values.account.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.account.service.port }}
+        envFrom:
+        - configMapRef:
+            name: bank-config
+        - secretRef:
+            name: bank-secrets

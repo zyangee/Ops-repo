@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.loans.name }}
+spec:
+  type: {{ .Values.loans.service.type }}
+  ports:
+  - port: {{ .Values.loans.service.port }}
+    targetPort: {{ .Values.loans.service.port }}
+  selector:
+    app: {{ .Values.loans.name }}

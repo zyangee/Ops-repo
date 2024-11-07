@@ -1,0 +1,77 @@
+global:
+  environment: production
+  domain: zyangee.store
+
+common:
+  configMap:
+    DATABASE_URL: "jdbc:postgresql://bank-db:5432/bank"
+    REDIS_HOST: "redis-master"
+
+  secret:
+    DB_PASSWORD: "Bankuser!@"
+    JWT_SECRET: "SecretKeyComplex1129@#"
+
+loans:
+  name: app-code-loans
+  image:
+    repository: zyange/app-code-loans
+    tag: latest
+    platform: linux/arm64
+  replicas: 2
+  service:
+    type: ClusterIP
+    port: 8081
+  ingress:
+    enabled: true
+    path: /loans
+
+account:
+  name: app-code-account
+  image:
+    repository: zyange/app-code-account
+    tag: latest
+    platform: linux/arm64
+  replicas: 2
+  service:
+    type: ClusterIP
+    port: 8082
+  ingress:
+    enabled: true
+    path: /account
+
+login: 
+  name: app-code-login
+  image:
+    repository: zyange/app-code-login
+    tag: latest
+    platform: linux/arm64
+  replicas: 2
+  service:
+    type: ClusterIP
+    port: 8083
+  ingress:
+    enabled: true
+    path: /login
+
+db:
+  name: bank-db
+  image:
+    repository: postgres
+    tag: "15.3-bullseye"
+    platform: linux/arm64
+  storage:
+    size: 10Gi
+    storageClass: standard
+  service:
+    type: ClusterIP
+    port: 5432
+  config:
+    POSTGRES_DB: bank
+    POSTGRES_USER: bankuser
+  secret:
+    POSTGRES_PASSWORD: "Bankuser!@"
+  initdb:
+    enabled: true
+    scripts:
+      - create-tables.sql
+      - initial-data.sql

@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.db.name }}-init
+data:
+  create-tables.sql: |
+    --회원테이블
+    CREATE TABLE users (
+      user_num INT AUTO_INCREMENT PRIMARY KEY,
+      userid VARCHAR(20) NOT NULL UNIQUE,
+      username VARCHAR(50) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      email VARCHAR(100) NOT NULL UNIQUE,
+      phone_number VARCHAR(20) NOT NULL UNIQUE,
+      date_of_birth CHAR(14) NOT NULL,
+      account_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      last_login TIMESTAMP NULL
+    );
+
+    --거래유형 참조 테이블
+    CREATE TABLE transaction_types (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      type VARCHAR(50) NOT NULL UNIQUE
+    );
+
+    --계좌 테이블
+    CREATE TABLE accounts (
+      account_id INT AUTO_INCREMENT PRIMARY KEY,
+      user_num INT NOT NULL,
+      account_number VARCHAR(20) NOT NULL UNIQUE,
+      balance BIGINT NOT NULL DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      account_password VARCHAR(255) NOT NULL,
+      FOREIGN KEY (user_num) REFERENCES users(user_num)
+    );
+
+    --거래내역 테이블
+    CREATE TABLE transactions ( 
+      transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+      account_id INT NOT NULL,
+      transaction_type_id INT NOT NULL,
+      amount BIGINT NOT NULL,
+      amount_after BIGINT NOT NULL,
+      receiver_account VARCHAR(20),
+      transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+      FOREIGN KEY (transaction_type_id) REFERENCES transaction_types(id)
+    );
+
+    --대출 유형 참조 테이블
+    CREATE TABLE loan_types (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      type VARCHAR(50) NOT NULL UNIQUE
+    );
+    
+    --대출 상태 참조 테이블
+    CREATE TABLE loan_statuses (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      status VARCHAR(50) NOT NULL UNIQUE
+    );
+
+    --대출 테이블
+    CREATE TABLE loans (
+      loan_id INT AUTO_INCREMENT PRIMARY KEY,
+      user_num INT NOT NULL,
+      loan_type_id INT NOT NULL,
+      loan_amount BIGINT NOT NULL,
+      interest_rate DECIMAL(5, 2) NOT NULL,
+      loan_start_date DATE NOT NULL,
+      loan_end_date DATE NOT NULL,
+      loan_status_id INT NOT NULL,
+      FOREIGN KEY (user_num) REFERENCES users(user_num),
+      FOREIGN KEY (loan_type_id) REFERENCES loan_types(id),
+      FOREIGN KEY (loan_status_id) REFERENCES loan_statuses(id)
+    );
+
+    --송금 상태 참조 테이블
+    CREATE TABLE transfer_statuses (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      status VARCHAR(50) NOT NULL UNIQUE  
+    );
+  
+    --송금 테이블
+    CREATE TABLE transfers (
+      transfer_id INT AUTO_INCREMENT PRIMARY KEY,
+      sender_account_id INT NOT NULL,
+      receiver_account VARCHAR(20) NOT NULL,
+      amount BIGINT NOT NULL,
+      transfer_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      status_id INT NOT NULL,
+      FOREIGN KEY (sender_account_id) REFERENCES accounts(account_id),
+      FOREIGN KEY (status_id) REFERENCES transfer_statuses(id)
+    );
+
+    --로그인 기록 테이블
+    CREATE TABLE login_history (
+      login_id INT AUTO_INCREMENT PRIMARY KEY,
+      user_num INT NOT NULL,
+      login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      ip_address VARCHAR(45),
+      device_info VARCHAR(255),
+      FOREIGN KEY (user_num) REFERENCES users(user_num)
+    );
+
+  initial-data.sql: |
+    insert into loan_statuses(status) values('진행중'), ('상환완료'), ('연체'), ('신청대기');
+    insert into loan_types(type) values('신용대출'),('담보대출'),('자동차대출'), ('사업대출');
+    insert into transaction_types(type) values('입금'), ('출금');
+    insert into transfer_statuses(status) values('이체 대기'), ('Completed'), ('Failed');

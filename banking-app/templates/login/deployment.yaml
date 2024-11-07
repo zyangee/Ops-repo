@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.login.name }}
+spec:
+  replicas: {{ .Values.login.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.login.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.login.name }}
+    spec: 
+      containers:
+      - name: {{ .Values.login.name }}
+        image: "{{ .Values.login.image.repository }}:{{ .Values.login.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.login.service.port }}
+        envFrom:
+        - configMapRef:
+            name: bank-config
+        - secretRef:
+            name: bank-secrets
