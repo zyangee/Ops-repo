@@ -1,6 +1,6 @@
 global:
   environment: production
-  domain: zyangee.store
+  domain: banking-app.zyangee.store
 
 common:
   configMap:

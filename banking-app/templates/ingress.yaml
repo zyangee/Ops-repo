@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: banking-ingress
+  annotations:
+    kubernetes.io/iingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: banking-app.zyangee.store
+    http:
+      paths:
+      - path: /loans(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.loans.name }}
+            port:
+              number: {{ .Values.loans.service.port }}
+      - path: /account(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.account.name }}
+            port:
+              number: {{ .Values.account.service.port }}
+      - path: /login(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.login.name }}
+            port:
+              number: {{ .Values.login.service.port }}
