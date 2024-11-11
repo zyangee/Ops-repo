@@ -10,6 +10,7 @@ common:
   secret:
     DB_PASSWORD: "Bankuser!@"
     JWT_SECRET: "SecretKeyComplex1129@#"
+    REDIS_PASSWORD: "RedisPassword1129@#"
 
 loans:
   name: app-code-loans
