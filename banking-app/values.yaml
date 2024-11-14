@@ -2,16 +2,6 @@ global:
   environment: production
   domain: banking-app.zyangee.store
 
-common:
-  configMap:
-    DATABASE_URL: "jdbc:postgresql://bank-db:5432/bank"
-    REDIS_HOST: "redis-master"
-
-  secret:
-    DB_PASSWORD: "Bankuser!@"
-    JWT_SECRET: "SecretKeyComplex1129@#"
-    REDIS_PASSWORD: "RedisPassword1129@#"
-
 loans:
   name: app-code-loans
   image:
