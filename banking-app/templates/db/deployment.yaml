@@ -28,6 +28,11 @@ spec:
             secretKeyRef:
               name: bank-db-secret
               key: DB_USER
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_ROOT_PASSWORD
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
