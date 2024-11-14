@@ -4,6 +4,9 @@ metadata:
   name: {{ .Values.db.name }}-init
 data:
   create-tables.sql: |
+    CREATE DATABASE IF NOT EXISTS bank;
+    USE bank;
+
     CREATE TABLE users (
       user_num INT AUTO_INCREMENT PRIMARY KEY,
       userid VARCHAR(20) NOT NULL UNIQUE,
