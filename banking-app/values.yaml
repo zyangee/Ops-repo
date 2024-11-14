@@ -47,20 +47,15 @@ login:
 db:
   name: bank-db
   image:
-    repository: postgres
-    tag: "15.3-bullseye"
+    repository: mysql
+    tag: "8.0"
     platform: linux/arm64
   storage:
     size: 10Gi
     storageClass: standard
   service:
     type: ClusterIP
-    port: 5432
-  config:
-    POSTGRES_DB: bank
-    POSTGRES_USER: bankuser
-  secret:
-    POSTGRES_PASSWORD: "Bankuser!@"
+    port: 3306
   initdb:
     enabled: true
     scripts:

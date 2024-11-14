@@ -16,7 +16,25 @@ spec:
       - name: banking-app
         image: zyange/app-code:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 80
+        env:
+        - name: MYSQL_HOST
+          value: {{ .Values.db.name }}
+        - name: MYSQL_DB
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_NAME
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_PASSWORD
 ---
 apiVersion: v1
 kind: Service
@@ -28,4 +46,4 @@ spec:
     app: banking-app
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 80
