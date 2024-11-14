@@ -4,7 +4,12 @@ metadata:
   name: {{ .Values.db.name }}-init
 data:
   create-tables.sql: |
+    CREATE USER IF NOT EXISTS 'bankuser'@'%' IDENTIFIED BY 'Bankuser!@';
+
     CREATE DATABASE IF NOT EXISTS bank;
+    GRANT ALL PRIVILEGES ON bank.* TO 'bankuser'@'%';
+    FLUSH PRIVILEGES;
+
     USE bank;
 
     CREATE TABLE users (
