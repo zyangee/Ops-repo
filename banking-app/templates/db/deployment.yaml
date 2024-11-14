@@ -21,13 +21,19 @@ spec:
         - name: POSTGRES_HOST
           value: {{ .Values.db.name }}
         - name: POSTGRES_DB
-          value: {{ .Values.db.config.POSTGRES_DB }}
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_NAME
         - name: POSTGRES_USER
-          value: {{ .Values.db.config.POSTGRES_USER }}
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_USER
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: bank-secrets
+              name: bank-db-secret
               key: DB_PASSWORD
         volumeMounts:
         - name: data
