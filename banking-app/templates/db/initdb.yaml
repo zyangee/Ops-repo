@@ -96,6 +96,8 @@ data:
     );
 
   initial-data.sql: |
+    USE bank;
+
     insert into loan_statuses(status) values('IN_PROGRESS'), ('COMPLETED'), ('OVERDUE'), ('PENDING');
     insert into loan_types(type) values('CREDIT_LOAN'), ('SECURED_LOAN'), ('CAR_LOAN'), ('BUSINESS_LOAN');
     insert into transaction_types(type) values('DEPOSIT'), ('WITHDRAWAL');
