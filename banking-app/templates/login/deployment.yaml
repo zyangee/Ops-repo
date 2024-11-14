@@ -17,8 +17,21 @@ spec:
         image: "{{ .Values.login.image.repository }}:{{ .Values.login.image.tag }}"
         ports:
         - containerPort: {{ .Values.login.service.port }}
-        envFrom:
-        - configMapRef:
-            name: bank-config
-        - secretRef:
-            name: bank-secrets
+        env:
+        - name: POSTGRES_HOST
+          value: {{ .Values.db.name }}
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_NAME
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bank-db-secret
+              key: DB_PASSWORD
