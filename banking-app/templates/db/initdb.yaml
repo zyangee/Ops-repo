@@ -4,7 +4,6 @@ metadata:
   name: {{ .Values.db.name }}-init
 data:
   create-tables.sql: |
-    --회원테이블
     CREATE TABLE users (
       user_num INT AUTO_INCREMENT PRIMARY KEY,
       userid VARCHAR(20) NOT NULL UNIQUE,
@@ -17,13 +16,11 @@ data:
       last_login TIMESTAMP NULL
     );
 
-    --거래유형 참조 테이블
     CREATE TABLE transaction_types (
       id INT AUTO_INCREMENT PRIMARY KEY,
       type VARCHAR(50) NOT NULL UNIQUE
     );
 
-    --계좌 테이블
     CREATE TABLE accounts (
       account_id INT AUTO_INCREMENT PRIMARY KEY,
       user_num INT NOT NULL,
@@ -34,7 +31,6 @@ data:
       FOREIGN KEY (user_num) REFERENCES users(user_num)
     );
 
-    --거래내역 테이블
     CREATE TABLE transactions ( 
       transaction_id INT AUTO_INCREMENT PRIMARY KEY,
       account_id INT NOT NULL,
@@ -47,13 +43,11 @@ data:
       FOREIGN KEY (transaction_type_id) REFERENCES transaction_types(id)
     );
 
-    --대출 유형 참조 테이블
     CREATE TABLE loan_types (
       id INT AUTO_INCREMENT PRIMARY KEY,
       type VARCHAR(50) NOT NULL UNIQUE
     );
     
-    --대출 상태 참조 테이블
     CREATE TABLE loan_statuses (
       id INT AUTO_INCREMENT PRIMARY KEY,
       status VARCHAR(50) NOT NULL UNIQUE
@@ -74,13 +68,11 @@ data:
       FOREIGN KEY (loan_status_id) REFERENCES loan_statuses(id)
     );
 
-    --송금 상태 참조 테이블
     CREATE TABLE transfer_statuses (
       id INT AUTO_INCREMENT PRIMARY KEY,
       status VARCHAR(50) NOT NULL UNIQUE  
     );
   
-    --송금 테이블
     CREATE TABLE transfers (
       transfer_id INT AUTO_INCREMENT PRIMARY KEY,
       sender_account_id INT NOT NULL,
@@ -92,7 +84,6 @@ data:
       FOREIGN KEY (status_id) REFERENCES transfer_statuses(id)
     );
 
-    --로그인 기록 테이블
     CREATE TABLE login_history (
       login_id INT AUTO_INCREMENT PRIMARY KEY,
       user_num INT NOT NULL,
@@ -103,7 +94,7 @@ data:
     );
 
   initial-data.sql: |
-    insert into loan_statuses(status) values('진행중'), ('상환완료'), ('연체'), ('신청대기');
-    insert into loan_types(type) values('신용대출'),('담보대출'),('자동차대출'), ('사업대출');
-    insert into transaction_types(type) values('입금'), ('출금');
-    insert into transfer_statuses(status) values('이체 대기'), ('Completed'), ('Failed');
+    insert into loan_statuses(status) values('IN_PROGRESS'), ('COMPLETED'), ('OVERDUE'), ('PENDING');
+    insert into loan_types(type) values('CREDIT_LOAN'), ('SECURED_LOAN'), ('CAR_LOAN'), ('BUSINESS_LOAN');
+    insert into transaction_types(type) values('DEPOSIT'), ('WITHDRAWAL');
+    insert into transfer_statuses(status) values('AWAITING_TRANSFER'), ('COMPLETED'), ('FAILED');
