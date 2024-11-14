@@ -53,7 +53,6 @@ data:
       status VARCHAR(50) NOT NULL UNIQUE
     );
 
-    --대출 테이블
     CREATE TABLE loans (
       loan_id INT AUTO_INCREMENT PRIMARY KEY,
       user_num INT NOT NULL,
