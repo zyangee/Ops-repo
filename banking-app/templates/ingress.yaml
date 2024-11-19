@@ -14,21 +14,21 @@ spec:
   - host: banking-app.zyangee.store
     http:
       paths:
-      - path: /loans(/|$)(.*)
+      - path: /loans
         pathType: Prefix
         backend:
           service:
             name: {{ .Values.loans.name }}
             port:
               number: {{ .Values.loans.service.port }}
-      - path: /account(/|$)(.*)
+      - path: /account
         pathType: Prefix
         backend:
           service:
             name: {{ .Values.account.name }}
             port:
               number: {{ .Values.account.service.port }}
-      - path: /login(/|$)(.*)
+      - path: /login
         pathType: Prefix
         backend:
           service:
