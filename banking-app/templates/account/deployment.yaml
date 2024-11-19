@@ -18,20 +18,20 @@ spec:
         ports:
         - containerPort: {{ .Values.account.service.port }}
         env:
-        - name: POSTGRES_HOST
+        - name: MYSQL_HOST
           value: {{ .Values.db.name }}
-        - name: POSTGRES_DB
+        - name: MYSQL_DB
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_NAME
-        - name: POSTGRES_USER
+              key: MYSQL_DB
+        - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_USER
-        - name: POSTGRES_PASSWORD
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_PASSWORD
+              key: MYSQL_PASSWORD
