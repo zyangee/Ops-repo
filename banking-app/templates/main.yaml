@@ -24,17 +24,17 @@ spec:
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_NAME
+              key: MYSQL_DB
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_USER
+              key: MYSQL_USER
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: bank-db-secret
-              key: DB_PASSWORD
+              key: MYSQL_PASSWORD
 ---
 apiVersion: v1
 kind: Service
