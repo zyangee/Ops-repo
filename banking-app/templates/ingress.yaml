@@ -7,6 +7,10 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - banking-app.zyangee.store
+    secretName: banking-tls-secret
   rules:
   - host: banking-app.zyangee.store
     http:
